@@ -1,0 +1,75 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container ">
+        <a class="navbar-brand" href="{% url 'index' %}"> &#9809; </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav navbar-nav-left">
+                <li class="nav-button"><a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-button-categories" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="items" href="{% url 'index' %}">All Products</a></li>
+                        <hr>
+                        <li><a class="items" href="{% url 'category' 'Clothes' %}">Clothes</a></li>
+                        <li><a class="items" href="{% url 'category' 'Mobiles' %}">Mobiles</a></li>
+                        <li><a class="items" href="{% url 'category' 'Drinks' %}">Drinks</a></li>
+                        <li><a class="items" href="{% url 'category' 'T shirts' %}">T-shirts</a></li>
+                        <li><a class="items" href="{% url 'category' 'Shoes' %}">Shoes</a></li>
+                        <li><a class="items" href="{% url 'category' 'Beds' %}">Beds</a></li>
+                        <li><a class="items" href="{% url 'category' 'pillows' %}">Pillow</a></li>
+
+                    </ul>
+                </li>
+               
+            </ul>
+           <form method=POST action="{% url 'search-1' %}">
+            {% csrf_token %}
+            <div class="search-field">
+                <div class="input-search">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searched">
+                </div>
+                <div class="search-button">
+                    <button class="btn"><a class="nav-link active" aria-current="page" >Search &#128269;</a></button>
+                </div>
+        </div>   
+        </form>
+            <form class="d-flex">
+                <a class="cart" type="submit" href="{% url 'cart_summary' %}"  >
+                    <i class="bi-cart"></i>
+                    Cart -
+                    <span class="cart-count" id="cart_quantity">{{cart|length}}</span>
+                </a>
+            </form>
+            <div>
+
+                <ul class="navbar-nav">
+                    <!-- <li class="nav-item"><a class="nav-link" href="{% url 'orderhistory' %}">Your Orders</a></li> -->
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown" id="nav-profile">
+                        <a class="nav-button-categories" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="items" href="{% url 'update_user' %}">User Profile</a></li>
+                            <hr>
+                            <li><a class="items" href="{% url 'update_profile_info' %}">Personal Profile</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+</body>

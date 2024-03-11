@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <!-- Header-->
+  <header>
+    <div class="container">
+        <div class="register">
+            <h1 class="register">Register to login 🖋️ </h1>
+        </div>
+    </div>
+</header>
+
+    <div class="'container">
+        <div class="row">
+            
+                <div class="col offset-md-3">
+                    <br/> <br/>
+                    <br/><br/>
+                    <form method = "POST" action="{% url 'register' %}" class="form">
+                            <!-- Cross Site Request Forgery - value will change for every time we login   -->
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <br/> 
+                        <button type="submit" class="btn btn-secondary"> Register </button>
+                    </form>
+                    <br/>
+                </div>
+           
+        </div>
+    </div>
+{% endblock %}

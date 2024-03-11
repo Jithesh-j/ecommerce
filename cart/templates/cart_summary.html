@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <!-- Header-->
+<div class="container">
+    {% if cart_products %}
+        {% for product in cart_products %}
+            <div class="card" style="max-width: 540px;">
+                <div class="row">
+                <div class="col">
+                    <img src="{{product.image.url}}" class="img-fluid rounded-start">
+                </div>
+                    <div class="col-md-8">
+                        <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-cart">X</button>
+                        <div class="card-body">
+                          
+                            <center>
+                            <h5 class="card-title">{{product.name}}</h5>
+                            {% if product.is_sale %}
+                               
+                                    <div class="bi-star-fill">&nbsp; &nbsp; For Sale! &nbsp; &nbsp; </div>                     
+                                    <!-- Product price-->
+                                        {{product.sale_price}} <strike>${{product.price}}</strike>
+                            {% else %}
+                            $ {{product.price}}
+                            <br/>
+                            {% endif %}
+                            <br/> <br/>
+                            <div class="row">
+                                <div class="col-md-2">Qty</div>
+                                <div class="col-md">
+                                    <select class="form-select form-select-sm" id="select{{product.id }}">
+                                            {% for key, value in quantities.items %}
+                                                {% if key == product.id|slugify %}
+                                                <option selected>{{ value }}  </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br/>
+                            <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endfor %}
+        <h3>Total- ${{totals}}</h3>
+        
+        <a type="button" id="checkoutButton" class="btn btn-secondary payment-button" href="{% url 'cart_checkout' %}">Check out</a>
+
+    {% else %}
+        <div  id="empty-cart" >
+            <p>Oops! Your cart is empty 😢.</p>
+            <p>Please shop and come back. Thank You!</p>
+        </div>
+    {% endif %}
+
+</div>
+
+<script>
+    //Update Cart
+     $(document).on('click', '.update-cart', function(e){
+        e.preventDefault();
+        //get product id
+        var productid = $(this).data('index')
+
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_update' %}",
+            data: {
+                product_id : $(this).data('index'),
+                product_qty : $('#select'+productid+' option:selected').text(),
+                csrfmiddlewaretoken : '{{csrf_token}}',
+                action: 'post'
+            },
+            success: function(json){
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+            }
+        });
+    })
+
+    // Delete Cart
+    $(document).on('click', '.delete-cart', function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_delete' %}",
+            data: {
+                product_id : $(this).data('index'),
+                csrfmiddlewaretoken : '{{csrf_token}}',
+                action: 'post'
+            },
+            success: function(json){
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+            }
+        });
+    })
+
+
+           
+</script>
+
+{% endblock %}

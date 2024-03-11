@@ -1,0 +1,26 @@
+<!-- {% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<body>
+    <h1>Order History</h1>
+     
+    {% if orders %}
+        <ul>
+            {% for order in orders %}
+                <li>
+                    Product: {{ order.product }}
+                    Price: {{order.price}}
+                    Quantity: {{ order.quantity }}
+                    Address: {{ order.address }}
+                    Phone: {{ order.phone }}
+                    Date: {{ order.date }}
+
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+</body>
+{% endblock %} -->

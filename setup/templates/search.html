@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+        {% if searched %}
+</br>
+        <center><b>Search results</b></br><p>"{{searched}}"</p></center>
+        <section>
+            <div class="container ">
+                <div class="row row-cols-4 justify-content-center">
+            {% for product in products_details %}
+            {% if product.is_sale == True %}
+                    <div class="col ">
+                        <div class="card">
+                            <div class="badge">On Sale </div>
+                            <img class="card-img-top" src="{{product.image.url}}"  />
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">{{product.name}}</h5>
+                                    <div class="bi-star-fill" style="color: darkgoldenrod">&nbsp; &nbsp; Christmas Sale! &nbsp; &nbsp; </div>                         
+                                        {{product.sale_price}} <strike>${{product.price}}</strike>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Details</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="col">
+                            <div class="card"> 
+                                <img class="card-img-top" src="{{product.image.url}}"/>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <h5 class="fw-bolder">{{product.name}}</h5>
+
+                                            ${{product.price}}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="text-center"><a class="btn btn-outline-dark" href="{% url 'product' product.id %}">View Details</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+            {% endfor %}
+
+        {% else %}
+       <p class="display-empty"> Ooops! Please Search to get the products &#128269;</p> 
+       
+        {% endif %}
+    </div>
+</div>
+</section>  
+{% endblock %}

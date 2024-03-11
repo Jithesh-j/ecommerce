@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <!-- Header-->
+  <header>
+    <div class="container">
+        <div class="login-page">
+            <h1 class="display-4">Login </h1>
+            
+        </div>
+    </div>
+</header>
+
+    <div class="'container">
+        <div class=""row>
+            <center>
+                <div class="col-8"> 
+                    <br/> <br/>
+                    <br/><br/>
+                    <form method = "POST" action="{% url 'login' %}" class="form">
+                            <!-- Cross Site Request Forgery - value will change for every time we login   -->
+                        {% csrf_token %}
+                        <div class="mb-3">
+                          <input type="text" class="form-control" name="username" placeholder="Enter your username">
+                          
+                        </div>
+                        <div class="mb-3">
+                          <input type="password" class="form-control" name="password" placeholder="Enter your password">
+                        </div>
+                        <br/> <br/>
+                        <button type="submit" class="btn btn-secondary">Login</button>
+                        <br/><br/>
+                    </form>
+                </div>
+            </center>
+            <p class="go-to-admin"><i>if you are an Admin please <a href="{% url 'admin:index' %}">Login</a> here</i></p>
+        </div>
+       
+    </div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    
+<!-- Header-->
+  <header id="changing-bg">
+    <div class="container" >
+        <div class="main">
+            <div id="imageContainer">
+                <img class="index-images" src="{% static 'assets/one.jpeg' %}" alt="Image 1">
+                <img class="index-images" src="{% static 'assets/two.avif' %}" alt="Image 2">
+                <img class="index-images" src="{% static 'assets/three.jpeg' %}" alt="Image 2">
+              </div>
+              <div class="changing-bg">
+                <h1 class="index-page-text">Welcome.... To J'Square..! 💫</h1>
+                <p class="index-page-text-1"><i>You are at the right place for your needs</i> 😌.</p>
+              </div>           
+        </div>
+      
+    </div>
+</header> 
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container ">
+                <div class="row row-cols-xl-4">
+                    
+                   {% for product in products %}
+                    {% if product.is_sale == True %}
+                    <div class="col">
+                        <div class="card" id="sale-card">
+                            <div class="badge">On Sale 
+                            </div>
+                            <img class="card-img-top" src="{{product.image.url}}"/>
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">{{product.name}}</h5>
+                                    <div class="bi-star-fill" style="color: darkgoldenrod">&nbsp; &nbsp; Christmas Sale! &nbsp; &nbsp; </div>                         
+    
+                                        {{product.sale_price}} <strike>${{product.price}}</strike>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Details</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="col ">
+                            <div class="card">
+                                <img class="card-img-top" src="{{product.image.url}}">
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <h5 class="fw-bolder">{{product.name}}</h5>
+                                            ${{product.price}}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Details</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}                   
+                </div>
+            </div>
+        </section>     
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+          $(document).ready(function() {
+            var scrollSpeed = 1800; 
+            var container = $('#imageContainer');
+        
+            function scrollImages() {
+              container.animate({
+                scrollLeft: container.scrollLeft() + container.width()
+              }, 'slow', function() {
+                
+                if (container.scrollLeft() >= container[0].scrollWidth - container.width()) {
+                  container.scrollLeft(0);
+                }
+              });
+            }
+            var scrolling = setInterval(scrollImages, scrollSpeed);
+            container.hover(function() {
+              clearInterval(scrolling);
+            }, function() {
+              scrolling = setInterval(scrollImages, scrollSpeed);
+            });
+          });
+        </script>
+        
+        
+{% endblock %}

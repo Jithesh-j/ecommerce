@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+          <!-- Header-->
+        <header class="">
+            <div class="container">
+                <div class="text-center text-black">
+                    <h1 class="category-names">{{category}}</h1>
+                </div>
+            </div>
+        </header>
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container">
+                <div class="row row-cols-4 justify-content-center">
+                    
+                   {% for product in products %}
+                    {% if product.is_sale == True %}
+                    <div class="col ">
+                        <div class="card " id="sale-card">
+                            <div class="badge">On Sale 
+                            </div>
+                            <img class="card-img-top" src="{{product.image.url}}" />
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">{{product.name}}</h5>
+                                    <div class="bi-star-fill" style="color: darkgoldenrod">&nbsp; &nbsp;Christmas Sale! &nbsp; &nbsp; </div>                         
+                                        {{product.sale_price}} <strike>${{product.price}}</strike>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Details</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="col ">
+                            <div class="card">
+                                <img class="card-img-top" src="{{product.image.url}}"/>
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <h5 class="fw-bolder">{{product.name}}</h5>
+                                            ${{product.price}}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Details</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}                   
+                </div>
+            </div>
+        </section>       
+{% endblock %}

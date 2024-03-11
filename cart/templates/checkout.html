@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container">
+    <a type="button" class="btn btn-secondary" href="{% url 'cart_summary' %}" style="margin-top: 10px;"> <-Back to Cart</a>
+    <h3> Please Check your items before continuing to the Payment!!  </h3>
+    {% if cart_products %}
+        {% for product in cart_products %}
+            <div class="card" style="max-width: 540px;">
+                <div class="row g-4">
+                <div class="col">
+                    <img src="{{product.image.url}}" class="img-fluid rounded-start">
+                </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <center>
+                            <h5 class="card-title">{{product.name}}</h5>
+                            {% if product.is_sale %}
+                                    <div class="bi-star-fill">&nbsp; &nbsp; For Sale! &nbsp; &nbsp; </div>                     
+                                        {{product.sale_price}} <strike>${{product.price}}</strike>
+                            {% else %}
+                            $ {{product.price}}
+                            <br/>
+                            {% endif %}
+                            <br/> <br/>
+                            <div class="row">
+                                <div class="col-md">
+                                    <p class="form-select form-select-sm" id="select{{product.id }}">
+                                            {% for key, value in quantities.items %}
+                                                {% if key == product.id|slugify %}
+                                                Qty: {{ value }}
+                                                {% endif %}
+                                            {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                            <br/>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endfor %}
+
+        <h3>Total- ${{totals}}</h3>
+        <div class="checkout-buttons">
+            <form method="post" action="{% url 'paymentsuccess' %}" id="Payment---"> 
+                {% csrf_token %}
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_51OnuXdBQ3eXPnL9FYQuKNfX5p0iRwVNeYXhH7Zd9tyYqnpiDpky3nmti90ylkBJV1fSUBeTpEebHm8Naj24ikOiQ00ebT2xaIk"
+                data-description="Payment"
+                data-locale="auto">
+                </script>
+            </form>           
+        </div>
+
+    {% endif %}  
+    
+{% endblock %}
